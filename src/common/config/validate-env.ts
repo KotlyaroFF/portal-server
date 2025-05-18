@@ -1,4 +1,3 @@
-// src/common/config/validate-env.ts
 import { z } from 'zod';
 
 export const envSchema = z.object({
@@ -7,16 +6,14 @@ export const envSchema = z.object({
   DATABASE_URL: z.string().url(),
 });
 
-export const validate = (config: z.input<typeof envSchema>) => {
+export const validate = (config: Record<string, unknown>) => {
   const result = envSchema.safeParse(config);
-  console.log('CONFIG:', {
-    mode: config.NODE_ENV,
-    url: config.DATABASE_URL,
-    port: config.PORT,
-  });
   if (!result.success) {
+    // eslint-disable-next-line no-console
     console.error('❌ Invalid environment variables:');
-    console.error(result.error.format());
+    // eslint-disable-next-line no-console
+    console.error(result.error.format);
+    // eslint-disable-next-line no-process-exit
     process.exit(1);
   }
   return result.data;
